@@ -3,33 +3,69 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Each decryptor has these values. Initializer is below
 typedef struct decryptor {
 
-                char name[60];
-                float decryptProb;
-                float decryptCost;
-                int decryptRuns;
+    char name[60];
+    float decryptProb;
+    int decryptRuns;
+    float decryptCost;
 
 } Decryptor;
 
-Decryptor initializeDecryptor(int);
-void printDecryptorStats(Decryptor,int,int);
+// Not used, but keep me for convenience
+enum decryptorPrice {
 
+	none = 0,
+	accel = 1,
+	attain = 2,
+	augment = 3,
+	optiAttain = 4,
+	optiAug = 5,
+	parity = 6,
+	process =7,
+	symmetry = 8
+
+};
+
+void printDecryptorStats(Decryptor,int,int);
+int initializeData();
+
+//BASE VALUES
+int baseRunsPerCopy;
+float baseInventionProbability;
+int numDecryptors;
+/////////////
+
+//PRICES AND PROFITS
+int numDatacore1;
+float datacore1cost;
+int numDatacore2;
+float datacore2cost;
+Decryptor *decryptorArray;
+/////////////
 
 int main(){
 
 	srand(time(NULL));
 
+	if(initializeData() == 0){
+	
+		printf("Exiting....\n");
+		return 1;
+		
+	}
+
 	int inventionRuns;
 	printf("Enter number of invention runs:");
-        scanf(" %d", &inventionRuns);
-        printf("\n");
+    scanf(" %d", &inventionRuns);
+	printf("\n");
 	
 	int finished;
 
 	do{
 
-		system("clear");
+		system("cls");
 
 		printf("Choose a decryptor -\n0 - No Decryptor\n1 - Accelerant\n");
 		printf("2 - Attainment\n3 - Augmentation\n4 - Optimized Attainment\n");
@@ -46,7 +82,7 @@ int main(){
 			int i;			
 			for(i = 0; i < 9; i++){
 
-				decryptorUsed = initializeDecryptor(i);
+				decryptorUsed = decryptorArray[i];
 				printDecryptorStats(decryptorUsed, inventionRuns,0);
 
 			}
@@ -58,7 +94,7 @@ int main(){
 		}
 		
 
-		decryptorUsed = initializeDecryptor(decryptorType);
+		//decryptorUsed = initializeDecryptor(decryptorType);
 		
 		printDecryptorStats(decryptorUsed, inventionRuns,1);
 
@@ -71,112 +107,22 @@ int main(){
 
 }
 
-Decryptor initializeDecryptor(int type){
-
-        Decryptor ret;
-
-        switch(type){
-
-                case 0:
-		default:
-			strcpy(ret.name, "No Decryptor");
-                        ret.decryptProb = 0;
-                        ret.decryptRuns = 0;
-                        ret.decryptCost = 0;
-                break;
-		case 1:
-			strcpy(ret.name, "Accelerant Decryptor");
-			ret.decryptProb = .20;
-			ret.decryptRuns = 1;
-			ret.decryptCost = 326001.00;
-		break;
-		case 2:
-			strcpy(ret.name, "Attainment Decryptor");
-			ret.decryptProb = .8;
-			ret.decryptRuns = 4;
-			ret.decryptCost = 2433000.52;
-		break;
-		case 3:
-			strcpy(ret.name, "Agumentation Decryptor");
-			ret.decryptProb = -.4;
-			ret.decryptRuns = 9;
-			ret.decryptCost = 816055.61;			
-		break;
-		case 4:
-			strcpy(ret.name, "Optimized Attainment Decryptor");
-			ret.decryptProb = .9;
-			ret.decryptRuns = 2;
-			ret.decryptCost = 3176002.08;			
-		break;
-		case 5:
-			strcpy(ret.name, "Optimized Augmentation Decryptor");
-			ret.decryptProb = -.1;
-			ret.decryptRuns = 7;
-			ret.decryptCost = 5005000.21;
-		break;
-		case 6:
-			strcpy(ret.name, "Parity Decryptor");
-			ret.decryptProb = .5;
-			ret.decryptRuns = 3;
-			ret.decryptCost = 1012114.25;			
-		break;
-		case 7:
-			strcpy(ret.name, "Process Decryptor");
-			ret.decryptProb = .1;
-			ret.decryptRuns = 0;
-			ret.decryptCost = 420003.59;
-		break;
-		case 8:
-			strcpy(ret.name, "Symmetry Decryptor");
-			ret.decryptProb = 0;
-			ret.decryptRuns = 2;
-			ret.decryptCost = 323000.02;		
-		break;
-
-
-        }
-
-
-        return ret;
-
-}
-
 //Print stats for a single decryptor
-void printDecryptorStats(Decryptor decryptor, int inventionRuns, int verbose){
-	
-	//BASE VALUES
-	const int baseRunsPerCopy = 1;
-	const float baseInventionProbability = .43;
-	/////////////
+void printDecryptorStats(Decryptor decryptor, int inventionRuns, int verbose)
+{
 
-	//PRICES AND PROFITS
-	const int numDatacore1 = 2;
-	const int numDatacore2 = 2;
-	const float datacore1cost =  89991.00;
-	const float datacore2cost = 118991.76;
-	/////////////
-
-	//TEMP VARS
 	register int successfulJobs = 0;
 	int totalRuns = 0;
-	/////////////
-
-	int finished = 0;
-
-	//CALCULATED VALUES
 	int finalRunsPerCopy = baseRunsPerCopy + decryptor.decryptRuns;
 	float finalInventionProbability = baseInventionProbability * (decryptor.decryptProb+1);
-	/////////////
-
+	
 	if(verbose)printf("\nCalc Invention Success Probability:%.2f\n", finalInventionProbability);
 
 	successfulJobs = 0;
 	register int c;
-	for(c = 0; c < inventionRuns; c++){
-
+	
+	for(c = 0; c < inventionRuns; c++)
 		successfulJobs = (rand() % 100)/100.0 <= finalInventionProbability?successfulJobs+1:successfulJobs;
-
-	}
 
 	if(verbose)printf("Total Invention Runs:%d\nSuccessful Jobs:%d\n", inventionRuns, successfulJobs);
 
@@ -188,6 +134,76 @@ void printDecryptorStats(Decryptor decryptor, int inventionRuns, int verbose){
 
 	if(!verbose)printf("Name: %-33s - %11.2f\n", decryptor.name, inventionCost/(float)totalSuccessfulRuns);
 
+
+}
+
+int initializeData(void)
+{
+
+	// Data file should be called data.txt
+	FILE *fp;
+	fp = fopen("data.txt","r");
+	
+	/*
+	
+//BASE VALUES
+int baseRunsPerCopy = 1;
+float baseInventionProbability = .43;
+/////////////
+	
+//PRICES AND PROFITS
+int numDatacore1 = 2;
+float datacore1cost =  89991.00;
+int numDatacore2 = 2;
+float datacore2cost = 118991.76;
+float decryptorPrices[9];
+/////////////
+	
+	*/
+	
+	int err;
+	
+	err = fscanf(fp, "%d %d %f", &numDecryptors, &baseRunsPerCopy, &baseInventionProbability);
+	
+	if(err != 3){
+		printf("Could not read first three values. Values read: %d\n", err);
+		return 0;
+	}
+	
+	printf("Number of decryptors detected: %d\n", numDecryptors);
+	
+	decryptorArray = (Decryptor*)calloc(numDecryptors,sizeof(Decryptor));	// Clear and allocate our decryptor array
+	
+	err = fscanf(fp, "%d %f %d %f", &numDatacore1, &datacore1cost, &numDatacore2, &datacore2cost);
+		
+	if(err != 4){
+		printf("Could not read datacore values. Values read: %d\n", err);
+		return 0;
+	}
+	
+	// Start reading decryptor info
+	register int i;
+	for(i = 0; i < numDecryptors; i++)
+	{
+	
+		err = fscanf(fp, "%*c%[^0-9.] %f %d %f", decryptorArray[i].name, &(decryptorArray[i].decryptProb), &(decryptorArray[i].decryptRuns), &(decryptorArray[i].decryptCost));
+	
+		printf("Scanned name: %s\nScanned Probability Augmentor: %.2f\nScanned Run Augmentor:%d\nScanned Cost:%.2f\n\n",
+		decryptorArray[i].name, decryptorArray[i].decryptProb, decryptorArray[i].decryptRuns, decryptorArray[i].decryptCost);
+	
+		if(err != 4)
+		{
+		
+			printf("Could not read decryptor %d.\n", i);
+			return 0;
+		
+		}
+	
+	}
+	
+	fclose(fp);
+
+	return 1;
 
 }
 

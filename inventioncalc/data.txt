@@ -1,0 +1,7 @@
+3
+1 .43
+2 89991.00 2 118991.76
+No Decryptor 0 0 0
+Accelerant Decryptor .2 1 386003.97
+Attainment Decryptor .8 4 2898001.00
+Augmentation Decryptor -.4
