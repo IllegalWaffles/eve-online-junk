@@ -16,6 +16,7 @@ typedef struct decryptor {
 void printDecryptorStats(Decryptor,int,int);
 int initializeData(int);
 void printTableHeader();
+void clear();
 
 //BASE VALUES
 int baseRunsPerCopy;
@@ -51,7 +52,7 @@ int main(){
 
 	do{
 
-		system("cls");
+		clear();
 
 		printf("Choose a decryptor -\n");
 		
@@ -67,6 +68,8 @@ int main(){
 
 		char decryptorType;
 		scanf(" %c", &decryptorType);	//Read user input
+
+		clear();
 
 		Decryptor decryptorUsed;
 	
@@ -108,7 +111,6 @@ int main(){
 
 void printTableHeader(){
 	
-	system("cls");
 	printf("%-33s - %11s - %-7s\n", "Name", "Avg Cost", "Ratio");
 	int i;
 	printf("-------------------------------------------------------\n");
@@ -205,5 +207,15 @@ int initializeData(int verbose)
 
 	return 1;
 
+}
+
+void clear(){
+	
+	#ifdef __WIN32__
+	system("cls");
+	#else
+	system("clear");
+	#endif
+	
 }
 
