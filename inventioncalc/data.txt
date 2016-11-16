@@ -1,7 +1,12 @@
-3
-1 .43
-2 89991.00 2 118991.76
+9
+1 .371
+2 93404.14 2 93501.01
 No Decryptor 0 0 0
 Accelerant Decryptor .2 1 386003.97
 Attainment Decryptor .8 4 2898001.00
-Augmentation Decryptor -.4
+Augmentation Decryptor -.4 9 715000.06
+Optimized Attainment Decryptor .9 2 3176005.95
+Optimized Augmentation Decryptor -.1 7 5005000.46
+Parity Decryptor .5 3 1012114.65
+Process Decryptor .1 0 420001.19
+Symmetry Decryptor 0 2 323617
