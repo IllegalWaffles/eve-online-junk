@@ -45,7 +45,7 @@ int main(){
 
 	int inventionRuns;
 	printf("Enter number of invention runs:");
-    scanf(" %d", &inventionRuns);
+    	scanf(" %d", &inventionRuns);
 	printf("\n");
 	
 	int finished;
@@ -126,7 +126,8 @@ void printDecryptorStats(Decryptor decryptor, int inventionRuns, int verbose)
 	int finalRunsPerCopy = baseRunsPerCopy + decryptor.decryptRuns;
 	float finalInventionProbability = baseInventionProbability * (decryptor.decryptProb+1);
 	
-	if(verbose)printf("\nCalc Invention Success Probability:%.2f\n", finalInventionProbability);	// Final invention success probability
+	if(verbose)printf("%s", decryptor.name);
+	if(verbose)printf("\nCalc Invention Success Probability:%.3f\n", finalInventionProbability);	// Final invention success probability
 
 	successfulJobs = 0;	// Counter for successful jobs
 	register int c;
