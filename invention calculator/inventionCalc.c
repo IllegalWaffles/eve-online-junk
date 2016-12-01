@@ -43,7 +43,7 @@ int main(){
 		
 	}
 
-	int inventionRuns;
+	unsigned int inventionRuns;
 	printf("Enter number of invention runs:");
     	scanf(" %d", &inventionRuns);
 	printf("\n");
@@ -121,23 +121,23 @@ void printTableHeader(){
 void printDecryptorStats(Decryptor decryptor, int inventionRuns, int verbose)
 {
 
-	register int successfulJobs = 0;
-	int totalRuns = 0;
-	int finalRunsPerCopy = baseRunsPerCopy + decryptor.decryptRuns;
+	register unsigned int successfulJobs = 0;
+	unsigned int totalRuns = 0;
+	unsigned int finalRunsPerCopy = baseRunsPerCopy + decryptor.decryptRuns;
 	float finalInventionProbability = baseInventionProbability * (decryptor.decryptProb+1);
 	
 	if(verbose)printf("%s", decryptor.name);
 	if(verbose)printf("\nCalc Invention Success Probability:%.3f\n", finalInventionProbability);	// Final invention success probability
 
 	successfulJobs = 0;	// Counter for successful jobs
-	register int c;
+	register unsigned int c;
 	
 	for(c = 0; c < inventionRuns; c++)
 		successfulJobs = (rand() % 100)/100.0 <= finalInventionProbability?successfulJobs+1:successfulJobs;	// Roll the dice!
 
 	if(verbose)printf("Total Invention Runs:%d\nSuccessful Jobs:%d\n", inventionRuns, successfulJobs);
 
-	int totalSuccessfulRuns = successfulJobs*finalRunsPerCopy;
+	unsigned int totalSuccessfulRuns = successfulJobs*finalRunsPerCopy;
 	if(verbose)printf("Total Successful Runs:%d\n\n", totalSuccessfulRuns);
 
 	float inventionCost = ((datacore1cost*(float)numDatacore1 + datacore2cost*(float)numDatacore2) + decryptor.decryptCost) * inventionRuns;
