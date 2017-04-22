@@ -8,16 +8,16 @@ STD 			:= -std=gnu11
 DFLAGS 			:= -g -DDEBUG -DCOLOR
 IFLAGS			:= -g -DINFO -DCOLOR
 
-debug: CFLAGS += $(DFLAGS)
-debug: all
-
-info: CLFAGS += $(IFLAGS)
-info: all
-
 all: $(INVENTION_CALC)
 
 $(INVENTION_CALC):
 	$(CC) $(CFLAGS) $(INC) $(SRC) -o $@ $(LIBS)
 
 clean:
-	$(RM) -rf $(INVENTION_CALC) *.o
+	$(RM) -r $(INVENTION_CALC) *.o
+
+debug: CFLAGS += $(DFLAGS)
+debug: all
+
+info: CLFAGS += $(IFLAGS)
+info: all

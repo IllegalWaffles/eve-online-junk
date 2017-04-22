@@ -7,7 +7,7 @@
 	#define clear() do{system("clear");}while(0)
 #endif
 
-#define NUM_INVENTION_RUNS 10000000
+#define NUM_INVENTION_RUNS 1000000
 
 #ifdef DEBUG
 	#define debug(S, ...)   do{fprintf(stderr, KMAG "DEBUG: %s:%s:%d " KNRM S,   __FILE__, __extension__ __FUNCTION__, __LINE__, __VA_ARGS__  );}while(0)
@@ -34,15 +34,20 @@
 // Each decryptor has these values. Initializer is below
 typedef struct decryptor {
 
+	int id;
     char name[60];
     float decryptProb;
     int decryptRuns;
     float decryptCost;
 
+    long num_successful_runs;
+
 } Decryptor;
 
-void printDecryptorStats(Decryptor,int);
-int initializeData();
+void printDecryptorStats(const Decryptor, const int);
+bool printAllDecryptorStats(Decryptor**, const int, const int);
+void *calc_successful_jobs(void *);
+Decryptor **initializeData();
 void printTableHeader();
 void printHR();
 
