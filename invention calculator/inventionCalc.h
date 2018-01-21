@@ -7,7 +7,7 @@
 	#define clear() do{system("clear");}while(0)
 #endif
 
-#define NUM_INVENTION_RUNS 1000000
+#define NUM_INVENTION_RUNS 10000000
 
 #ifdef DEBUG
 	#define debug(S, ...)   do{fprintf(stderr, KMAG "DEBUG: %s:%s:%d " KNRM S,   __FILE__, __extension__ __FUNCTION__, __LINE__, __VA_ARGS__  );}while(0)
@@ -44,7 +44,7 @@ typedef struct decryptor {
 
 } Decryptor;
 
-void printDecryptorStats(const Decryptor, const int);
+void printDecryptorStats(const Decryptor, const int, const int);
 bool printAllDecryptorStats(Decryptor**, const int, const int);
 void *calc_successful_jobs(void *);
 Decryptor **initializeData();

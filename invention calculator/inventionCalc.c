@@ -44,7 +44,7 @@ int main(){
 
 	do{
 
-		//clear();
+		clear();
 
 		printf("Choose a decryptor -\n");
 
@@ -71,7 +71,7 @@ int main(){
 
 			Decryptor *decryptorUsed = decryptorArray[decryptorType-'0'];	// Get the decryptor the user wants
 
-			printDecryptorStats(*decryptorUsed, inventionRuns);  // Print stats for this decryptor only
+			printDecryptorStats(*decryptorUsed, inventionRuns, 0);  // Print stats for this decryptor only
 
 			printf("\n\nAgain? [0/1]:");
 			int temp;
@@ -100,34 +100,59 @@ void printHR(){
 }
 
 //Print stats for a single decryptor
-void printDecryptorStats(const Decryptor decryptor, const int inventionRuns)
+void printDecryptorStats(const Decryptor decryptor, const int inventionRuns, const int brief)
 {
 
 	unsigned int finalRunsPerCopy = baseRunsPerCopy + decryptor.decryptRuns;
 	float finalInventionProbability = baseInventionProbability * (decryptor.decryptProb+1);
 
-	printf("%s", decryptor.name);
-	printf("\nCalc Invention Success Probability:%.3f\n", finalInventionProbability);	// Final invention success probability
+	if(!brief){
+
+		printf("%s", decryptor.name);
+		printf("\nCalc Invention Success Probability:%.3f\n", finalInventionProbability);	// Final invention success probability
+
+	}
 
 	register unsigned int successfulJobs = 0;	// Counter for successful jobs
 	register unsigned int c;
 
 	//Number crunching. This should be multithreaded
-	for(c = 0; c < inventionRuns; c++)
-		successfulJobs = (rand() % 100)/100.0 <= finalInventionProbability?successfulJobs+1:successfulJobs;	// Roll the dice!
+	if(brief){
 
-	printf("Total Invention Runs:%d\nSuccessful Jobs:%d\n", inventionRuns, successfulJobs);
+		//If this is brief, then we don't need to calculate jobs anymore.
+		//Number of successful jobs has already been calculated in another thread.
+		successfulJobs = decryptor.num_successful_runs;
+
+	}else{
+
+		//Otherwise, since we're doing a single decryptor, we need to calculate
+		//Successful jobs on the fly.
+
+		for(c = 0; c < inventionRuns; c++)
+			successfulJobs = (rand() % 100)/100.0 <= finalInventionProbability?successfulJobs+1:successfulJobs;	// Roll the dice!
+
+	}
+
+	if(!brief)
+		printf("Total Invention Runs:%d\nSuccessful Jobs:%d\n", inventionRuns, successfulJobs);
 
 	unsigned int totalSuccessfulRuns = successfulJobs*finalRunsPerCopy;
-	printf("Total Successful Runs:%d\n\n", totalSuccessfulRuns);
+
+	if(!brief)
+		printf("Total Successful Runs:%d\n\n", totalSuccessfulRuns);
 
 	float inventionCost = ((datacore1cost*(float)numDatacore1 + datacore2cost*(float)numDatacore2) + decryptor.decryptCost) * inventionRuns;
 	float runRatio = (float)totalSuccessfulRuns/(float)inventionRuns;
 
-	printf("Average invention cost per manufacturing job:%.2f\n", inventionCost/(float)totalSuccessfulRuns);
-	printf("Ratio of Invention Runs to Final Job Runs:%.3f\n", runRatio);
+	if(!brief){
 
-	//fprintf(stdout, "%-33s - %11.2f - %-7.3f\n", decryptor.name, inventionCost/(float)totalSuccessfulRuns, runRatio);
+		printf("Average invention cost per manufacturing job:%.2f\n", inventionCost/(float)totalSuccessfulRuns);
+		printf("Ratio of Invention Runs to Final Job Runs:%.3f\n", runRatio);
+
+	}
+
+	if(brief)
+		fprintf(stdout, "%-33s - %11.2f - %-7.3f\n", decryptor.name, inventionCost/(float)totalSuccessfulRuns, runRatio);
 
 }
 
@@ -161,7 +186,7 @@ bool printAllDecryptorStats(Decryptor **decryptors, const int numDecryptors, con
 		debug("Value of thread %d: %lu\n", i, decryptorArray[i]->num_successful_runs);
 
 		//Calculate the rest of the statistics here
-
+		printDecryptorStats(*decryptorArray[i], inventionRuns, 1);
 
 	}
 

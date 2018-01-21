@@ -2,11 +2,11 @@
 1 .445
 2 94112.01 2 93807.02
 No Decryptor 0 0 0
-Accelerant Decryptor .2 1 386003.97
-Attainment Decryptor .8 4 2898001.00
-Augmentation Decryptor -.4 9 750000.06
-Optimized Attainment Decryptor .9 2 3176005.95
-Optimized Augmentation Decryptor -.1 7 5005000.46
-Parity Decryptor .5 3 1012114.65
-Process Decryptor .1 0 420001.19
-Symmetry Decryptor 0 2 323617
+Accelerant Decryptor .2 1 457200.26
+Attainment Decryptor .8 4 3201009.19
+Augmentation Decryptor -.4 9 1211000.54
+Optimized Attainment Decryptor .9 2 4100078.23
+Optimized Augmentation Decryptor -.1 7 4304011.02
+Parity Decryptor .5 3 1653010.77
+Process Decryptor .1 0 540000.07
+Symmetry Decryptor 0 2 355028.99
